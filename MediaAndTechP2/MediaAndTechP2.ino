@@ -18,5 +18,10 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  // if button is pressed, swivel servo 180 degrees
+  if(digitalRead(buttonPin) == HIGH){
+    myServo.write(180);
+  } else {
+    myServo.write(0);
+  }
 }
