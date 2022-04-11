@@ -8,74 +8,84 @@
 #include<Servo.h>;
 
 //VARIABLES 
+//servos
 Servo ursulaServo;
 Servo whirlServo;
 Servo armServo;
 
-//variables values to be assigned later;
-const int ursulaSwitch = ; 
-const int whirlButton = ;
-const int armSwitch = ;
-const int boatSwitch = ;
-const int tridentSwitch = ;
-const int tridentLED = ; 
-const int boatLED = ;
+//variables (values may be changed for final build assembly)
+//Pin numbers
+const int ursulaSwitch = 7; 
+const int tridentSwitch = 6;
+const int whirlButton = 5;
+const int boatSwitch = 4;
+const int armSwitch = 3;
+const int tridentLED = 13; 
+const int boatLED = 12;
+
 
 
 void setup() {
-  // put your setup code here, to run once:
-  ursulaServo.attach(9);//might need to change numbers
-  whirlServo.attach(9);
+  ursulaServo.attach(11); //pins for servos may be changed for final build assembly
+  whirlServo.attach(10);
   armServo.attach(9);
+
+  //inputs
   pinMode(ursulaSwitch, INPUT);
   pinMode(whirlButton, INPUT);
-  pinMode(tridentSwitch, INPUT); //may change variable name
+  pinMode(tridentSwitch, INPUT); 
   pinMode(boatSwitch, INPUT);
   pinMode(armSwitch, INPUT);
+
+  //led outputs
   pinMode(tridentLED, OUTPUT);
   pinMode(boatLED, OUTPUT);
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  // if button is pressed, swivel servo 180 degrees
 
-  //1.Ursula flipping to reveal transformed Ursula
-  if(digitalRead(ursulaSwitch) == HIGH){
+  //Project interactions
+  //1. Ariel and Eric switch activating servo to reveal transformed Ursula
+    if(digitalRead(ursulaSwitch) == HIGH){
     ursulaServo.write(180);
   } else {
     ursulaServo.write(0);
   }
 
-  //2.Whirlpool spinning
+  //2. Whirlpool spinning activated by button
   if(digitalRead(whirlButton) == HIGH){
-    whirlServo.write(180);
-    whirlServo.write(180); //check if this gives a spinning effect
+    whirlServo.write(360);
+    delay(1200);
+    whirlServo.write(0);
+    delay(1200);
   } else {
     whirlServo.write(0);
   }
 
-  //3.Trident activates LED
+  //3. Trident switch activates LED
   if(digitalRead(tridentSwitch) == HIGH){
     digitalWrite(tridentLED, HIGH);
   } else {
     digitalWrite(tridentLED, LOW);
   }
 
-  //4.Boat switch activates LEDs/LED?, maybe make it flickering
-  if(digitalRead(boatSwitch == HIGH){
+  //4. Boat switch activates blinking LED
+  if(digitalRead(boatSwitch) == HIGH){
     digitalWrite(boatLED, HIGH);
-    delay(500); //delay time may need to be changed to get desired effect
+    delay(500);                                 //delay time may need to be changed to get desired effect
     digitalWrite(boatLED, LOW);
-    delay(500)
+    delay(500);
   } else {
     digitalWrite(boatLED, LOW);
   }
 
-  //5.Arm switch (cake object) activates servo on Ariel's arm to have it wave
+  //5. Arm switch (cake object) activates servo on Ariel's arm to have it wave
   if(digitalRead(armSwitch) == HIGH){
-    armServo.write(180); //check if it gives a waving effect
-    armServo.write(180);
+    armServo.write(90); 
+    delay(500);
+    armServo.write(0);
+    delay(500);
   } else {
     armServo.write(0);
   }
