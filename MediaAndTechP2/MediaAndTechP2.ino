@@ -19,15 +19,17 @@ const int whirlButton = 5;
 const int boatSwitch = 4;
 const int armSwitch = 3;
 const int tridentLED = 13; 
-
+ 
 const int ursulaRedLED = 12;
 const int ursulaYellowLED = 8;
 const int ursulaGreenLED = 2;
-
+ 
 int ursulaHealthCounter = 0;
 int targetVALUE;
 int prevTargetVALUE = 0;
-
+ 
+int eelHealth = 0;
+ 
 //testing
 bool testUrsula = true;
 unsigned long armPreviousMillis = 0;
@@ -38,7 +40,7 @@ const long interval = 500;
  
 void setup() {
   Serial.begin(9600);
-  
+ 
   ursulaServo.attach(11); 
   whirlServo.attach(10);
   armServo.attach(9);
@@ -58,26 +60,26 @@ void setup() {
   pinMode(ursulaRedLED, OUTPUT);
   pinMode(ursulaYellowLED, OUTPUT);
   pinMode(ursulaGreenLED, OUTPUT);
-  
+ 
   //Ursula health bar
   int ursulaHealthCounter = 0;
   digitalWrite(ursulaRedLED, HIGH);
   digitalWrite(ursulaYellowLED, HIGH);
   digitalWrite(ursulaGreenLED, HIGH);
-  digitalWrite(tridentLED, LOW);
+  digitalWrite(tridentLED, HIGH);
 }
  
 void loop() {
-  
+ 
   ursulaFlip(); //1
   whirlPool(); //2
   trident(); //3
   boatKillsUrsula(); //4
   arielWaving(); //5
-
+ 
 }
-
-
+ 
+ 
 //1. Ariel and Eric switch activating servo to reveal transformed Ursula
 void ursulaFlip(){
   if (digitalRead(ursulaSwitch) == HIGH) {
@@ -87,7 +89,7 @@ void ursulaFlip(){
     ursulaServo.write(0);
   }
 }
-
+ 
 void whirlPool(){
     if (digitalRead(whirlButton) == HIGH) {
       unsigned long whirlCurrentMillis = millis();
@@ -101,18 +103,21 @@ void whirlPool(){
       }
     }
   }
-
-
-
+ 
+ 
+ 
 //3. Trident switch activates LED
 void trident(){
   if(digitalRead(tridentSwitch) == HIGH){  
-    digitalWrite(tridentLED, HIGH);
-  } else {
-    digitalWrite(tridentLED, LOW);
+    eelHealth ++;
+    if (eelHealth >= 1) {
+      digitalWrite(tridentLED, LOW);
+    } else {
+      digitalWrite(tridentLED, HIGH);
+    }
   }
 }
-
+ 
 //4. Boat switch activates blinking LED //maybe have lives and at end plays piezo?
 void boatKillsUrsula(){
     targetVALUE = digitalRead(boatSwitch);
@@ -132,8 +137,8 @@ void boatKillsUrsula(){
       prevTargetVALUE = targetVALUE;
     }
   }
-
-
+ 
+ 
 //5. Cake switch activates Ariel's waving
 void arielWaving(){
   if (digitalRead(armSwitch) == HIGH) {
